@@ -1,9 +1,7 @@
-// Models
 package db
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 )
 
@@ -18,41 +16,28 @@ type Subscription struct {
 	Notified         bool      `json:"notified"`
 }
 
-func CraeteSubscription(db *sql.DB, sub *Subscription) error {
-	query := `INSERT INTO subscriptions (name, email, product, version, eol_date, notify_days_before, notified) 
-	VALUES (?, ?, ?, ?, ?, ?, ?)`
-
-	_, err := db.Exec(query, sub.Name, sub.Email, sub.Product, sub.Version, sub.EOLDate, sub.NotifyDaysBefore, sub.Notified)
-
-	if err != nil {
-		return fmt.Errorf("failed to create subscription: %v", err)
-	}
-
-	return nil
+func CreateSubscription(db *sql.DB, sub *Subscription) error {
+	query := `INSERT INTO subscriptions (name, email, product, version, eol_date, notify_days_before, notified)
+	          VALUES (?, ?, ?, ?, ?, ?, 0)`
+	_, err := db.Exec(query, sub.Name, sub.Email, sub.Product, sub.Version, sub.EOLDate, sub.NotifyDaysBefore)
+	return err
 }
 
 func GetAllSubscriptions(db *sql.DB) ([]Subscription, error) {
-	rows, err := db.Query("SELECT id, name, email, product, version, eol_date, notify_days_before, notified FROM subscriptions")
-
+	rows, err := db.Query(`SELECT id, name, email, product, version, eol_date, notify_days_before, notified FROM subscriptions`)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get subscriptions: %v", err)
+		return nil, err
 	}
-
 	defer rows.Close()
 
-	subs := []Subscription{}
-
+	var subs []Subscription
 	for rows.Next() {
 		s := Subscription{}
-
 		err := rows.Scan(&s.ID, &s.Name, &s.Email, &s.Product, &s.Version, &s.EOLDate, &s.NotifyDaysBefore, &s.Notified)
-
 		if err != nil {
-			return nil, fmt.Errorf("failed to scan subscription: %v", err)
+			return nil, err
 		}
-
 		subs = append(subs, s)
 	}
-
 	return subs, nil
 }
