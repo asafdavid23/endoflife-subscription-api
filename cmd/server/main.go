@@ -9,7 +9,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/mattn/go-sqlite3"
 
-	"endoflife-subscription-api/internal/db"
+	"github.com/asafdavid23/endoflife-subscription-api/internal/db"
 
 	"github.com/asafdavid23/endoflife-subscription-api/internal/handler"
 )

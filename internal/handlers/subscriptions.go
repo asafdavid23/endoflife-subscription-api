@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/yourusername/endoflife-subscription-api/internal/db"
+	"github.com/asafdavid23/endoflife-subscription-api/internal/db"
 )
 
 type CreateSubscriptionRequest struct {
