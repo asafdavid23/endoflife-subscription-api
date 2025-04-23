@@ -15,7 +15,7 @@ func main() {
 
 	defer db.Close()
 
-	if err := db.InitializeSchema(db); err != nil {
+	if err := InitializeSchema(db); err != nil {
 		log.Fatalf("failed to initialize schema: %v", err)
 	}
 
