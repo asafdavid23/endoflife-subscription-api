@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres
+    container_name: eol-postgres
+    environment:
+      POSTGRES_USER: eol
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: eol_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db_migrations:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:
